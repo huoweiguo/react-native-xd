@@ -1,0 +1,11 @@
+{
+    "respCode": "827262",
+    "respMsg": "借款失败",
+    "data": {
+        "smallText": "支付放款失败，请联系客服处理",
+        "bankName": "中国银行",
+        "endOfNumber": "0090",
+        "loanAmt": 2000,
+        "arrivalAmt": 1635
+    }
+}

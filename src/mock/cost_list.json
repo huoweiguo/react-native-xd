@@ -1,0 +1,42 @@
+{
+    "respCode": "000000",
+    "respMsg": "获取数据成功",
+    "data": [
+        {
+            "id": 1322,
+            "datatime": "2019年01月15日",
+            "amount": 534.45,
+            "isOverdue": false
+        },
+        {
+            "id": 1334,
+            "datatime": "2019年02月15日",
+            "amount": 556.45,
+            "isOverdue": false
+        },
+        {
+            "id": 1422,
+            "datatime": "2019年03月15日",
+            "amount": 534.45,
+            "isOverdue": false
+        },
+        {
+            "id": 1522,
+            "datatime": "2019年04月15日",
+            "amount": 532.45,
+            "isOverdue": false
+        },
+        {
+            "id": 1622,
+            "datatime": "2019年05月15日",
+            "amount": 524.45,
+            "isOverdue": false
+        },
+        {
+            "id": 1722,
+            "datatime": "2019年06月15日",
+            "amount": 525.45,
+            "isOverdue": false
+        }
+    ]
+}
