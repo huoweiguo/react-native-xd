@@ -43,7 +43,9 @@ export const styles = StyleSheet.create({
         lineHeight: 47
     },
     repay_lsit: {
-        backgroundColor: '#fff'
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingBottom: 20
     },
     r_arrow: {
         width: 16,
@@ -52,6 +54,7 @@ export const styles = StyleSheet.create({
         marginLeft: 2
     },
     list_s: {
+        position: 'relative',
         paddingLeft: 22,
         paddingRight: 22,
         flexDirection: 'row',
@@ -64,13 +67,25 @@ export const styles = StyleSheet.create({
     list_date: {
         height: 60,
         lineHeight: 60,
-        color: '#9b9b9b',
+        color: '#4a4a4a',
         fontSize: 14
     },
     list_amount: {
         height: 60,
         lineHeight: 60,
-        color: '#9b9b9b',
+        color: '#4a4a4a',
         fontSize: 18
+    },
+    repay_s: {
+        color: '#9b9b9b'
+    },
+    textMask: {
+        position: 'absolute',
+        flex: 1,
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: 60,
+        zIndex: 10
     }
 });

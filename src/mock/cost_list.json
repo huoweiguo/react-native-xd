@@ -1,42 +1,77 @@
 {
     "respCode": "000000",
     "respMsg": "获取数据成功",
+    "once": 5,
+    "amount": 1788.96,
     "data": [
         {
             "id": 1322,
             "datatime": "2019年01月15日",
             "amount": 534.45,
-            "isOverdue": false
+            "isOverdue": "S"
         },
         {
             "id": 1334,
             "datatime": "2019年02月15日",
             "amount": 556.45,
-            "isOverdue": false
+            "isOverdue": "S"
         },
         {
             "id": 1422,
             "datatime": "2019年03月15日",
             "amount": 534.45,
-            "isOverdue": false
+            "isOverdue": "O"
         },
         {
             "id": 1522,
             "datatime": "2019年04月15日",
             "amount": 532.45,
-            "isOverdue": false
+            "isOverdue": "O"
         },
         {
             "id": 1622,
             "datatime": "2019年05月15日",
             "amount": 524.45,
-            "isOverdue": false
+            "isOverdue": "W"
         },
         {
             "id": 1722,
             "datatime": "2019年06月15日",
             "amount": 525.45,
-            "isOverdue": false
+            "isOverdue": "W"
+        },{
+            "id": 1822,
+            "datatime": "2019年07月15日",
+            "amount": 514.45,
+            "isOverdue": "W"
+        },
+        {
+            "id": 1872,
+            "datatime": "2019年08月15日",
+            "amount": 535.45,
+            "isOverdue": "W"
+        },{
+            "id": 1432,
+            "datatime": "2019年09月15日",
+            "amount": 524.45,
+            "isOverdue": "W"
+        },
+        {
+            "id": 1922,
+            "datatime": "2019年10月15日",
+            "amount": 522.45,
+            "isOverdue": "W"
+        },{
+            "id": 1621,
+            "datatime": "2019年11月15日",
+            "amount": 524.45,
+            "isOverdue": "W"
+        },
+        {
+            "id": 1122,
+            "datatime": "2019年12月15日",
+            "amount": 525.45,
+            "isOverdue": "W"
         }
     ]
 }

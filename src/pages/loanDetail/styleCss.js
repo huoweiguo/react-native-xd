@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         left: 0,
         top: 0,
         width: 375,
-        height: 192,
+        height: 167,
         backgroundColor: '#567bff'
     },
     back: {
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     },
     loan_nav: {
         position: 'relative',
-        marginTop: 50,
+        marginTop: 10,
         marginLeft: 10,
         marginRight: 10
     },

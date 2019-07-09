@@ -5,7 +5,8 @@ import {
     StyleSheet, 
     TouchableHighlight, 
     TouchableOpacity, 
-    TextInput
+    TextInput,
+    SafeAreaView
 } from 'react-native';
 
 class Login extends Component {
@@ -44,62 +45,64 @@ class Login extends Component {
 
     render () {
         return (
-            <View style={styles.loginContent}>
+            <SafeAreaView>
+                <View style={styles.loginContent}>
 
-                {/* title */}
-                <View style={styles.titleNav}>
-                    <Text style={styles.loginTitle}>登录/注册</Text>
-                    <Text style={styles.welcome}>欢迎使用百家有米</Text>
-                </View>
-
-                {/* 手机号输入框 */}
-                <View style={styles.iptBox}>
-                    <TextInput 
-                        style={styles.inpt1}
-                        onChangeText={this.changeText.bind(this)}
-                        maxLength = {11}
-                        value={this.state.inputValue}
-                        placeholder="请输入手机号"
-                        keyboardType='numeric'
-                    />
-                </View>
-
-                {/**获取验证码按钮 */}
-                <View>
-                    <TouchableHighlight 
-                        style={[this.state.status ? styles.getCode : styles.noCode, styles.smsBtn]} 
-                        underlayColor="#bbcaff" 
-                        onPress={this._getSmsCode.bind(this)}>
-                        <Text style={styles.btnText}>获取验证码</Text>
-                    </TouchableHighlight>
-                </View>
-                
-                {/**其他方式登录 */}
-                <View style={styles.pswBox}>
-                    <View style={styles.viewText}>
-                        <Text style={styles.notCode}>收不到验证码</Text>
+                    {/* title */}
+                    <View style={styles.titleNav}>
+                        <Text style={styles.loginTitle}>登录/注册</Text>
+                        <Text style={styles.welcome}>欢迎使用百家有米</Text>
                     </View>
 
-                    
-                    <TouchableOpacity 
-                        style={styles.viewText}
-                        activeOpacity={0.8}
-                        onPress={this._onPress.bind(this)}>
-                        <Text style={styles.pswlogin}>密码登录</Text>
-                    </TouchableOpacity>
-                   
-                    
-                </View>
+                    {/* 手机号输入框 */}
+                    <View style={styles.iptBox}>
+                        <TextInput 
+                            style={styles.inpt1}
+                            onChangeText={this.changeText.bind(this)}
+                            maxLength = {11}
+                            value={this.state.inputValue}
+                            placeholder="请输入手机号"
+                            keyboardType='numeric'
+                        />
+                    </View>
 
-                <View style={styles.bottomBox}>
-                    <Text style={styles.bottomText}>
-                        登录注册即表明您已阅读并同意
-                        <Text style={styles.agreement}>
-                            《百家有米注册协议》
+                    {/**获取验证码按钮 */}
+                    <View>
+                        <TouchableHighlight 
+                            style={[this.state.status ? styles.getCode : styles.noCode, styles.smsBtn]} 
+                            underlayColor="#bbcaff" 
+                            onPress={this._getSmsCode.bind(this)}>
+                            <Text style={styles.btnText}>获取验证码</Text>
+                        </TouchableHighlight>
+                    </View>
+                    
+                    {/**其他方式登录 */}
+                    <View style={styles.pswBox}>
+                        <View style={styles.viewText}>
+                            <Text style={styles.notCode}>收不到验证码</Text>
+                        </View>
+
+                        
+                        <TouchableOpacity 
+                            style={styles.viewText}
+                            activeOpacity={0.8}
+                            onPress={this._onPress.bind(this)}>
+                            <Text style={styles.pswlogin}>密码登录</Text>
+                        </TouchableOpacity>
+                    
+                        
+                    </View>
+
+                    <View style={styles.bottomBox}>
+                        <Text style={styles.bottomText}>
+                            登录注册即表明您已阅读并同意
+                            <Text style={styles.agreement}>
+                                《百家有米注册协议》
+                            </Text>
                         </Text>
-                    </Text>
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>    
         );
     }
 }
@@ -108,7 +111,7 @@ class Login extends Component {
 const styles = StyleSheet.create({
     loginContent: {
         height: '100%',
-        paddingTop: 80,
+        paddingTop: 60,
         paddingLeft: 30,
         paddingRight: 30,
         position: 'relative'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, SafeAreaView } from 'react-native';
 import { styles } from './styleCss';
 import ImageSilder from '../../components/imageSilder';
 
@@ -47,52 +47,54 @@ class Loan extends Component {
         let { productList } = this.state;
         let _this = this;
         return  (
-            <View style={{backgroundColor: '#f5f5f5', flex:1}}>
-                <View style={styles.container}>
-                    <View styles={styles.geolocation}>
-    
-                        <View style={styles.geoMap}>
-                            <View><Image style={styles.mapImg} source={require('../../assets/map.png')}/></View>
-                            <View><Text style={styles.city}>上海市</Text></View>
+            <SafeAreaView style={{flex: 1}}>
+                <View style={{backgroundColor: '#f5f5f5', flex:1}}>
+                    <View style={styles.container}>
+                        <View styles={styles.geolocation}>
+        
+                            <View style={styles.geoMap}>
+                                <View><Image style={styles.mapImg} source={require('../../assets/map.png')}/></View>
+                                <View><Text style={styles.city}>上海市</Text></View>
+                            </View>
+        
+                            <Image style={styles.ding} source={require('../../assets/icon_have_new.png')} />
+        
                         </View>
-    
-                        <Image style={styles.ding} source={require('../../assets/icon_have_new.png')} />
-    
+        
+                        {/**BANNER */}
+                        <View style={styles.banner}>
+                            <ImageSilder
+                                height={135}
+                                autoplay={true}
+                                images={this.state.imgArr} 
+                            />
+                        </View>
+                        
+        
+                        <View style={styles.nav}>
+                            <Text style={styles.navText}>借款推荐</Text>
+                        </View>
+        
+                        <View style={{flex: 1}}>
+                            <ScrollView style={{flex: 1}}>
+                                {
+                                    productList.map(function (item, index) {
+                                        return (
+                                            <Text key={index} onPress={_this._goInitLink.bind(_this)} style={[styles.proView, (index == productList.length - 1) ? styles.prodLast : '']}>
+                                                <Image style={styles.product} source={item}/>
+                                            </Text>
+                                        );
+                                    })
+                                }
+                            </ScrollView>
+                        </View>
                     </View>
-    
-                    {/**BANNER */}
-                    <View style={styles.banner}>
-                        <ImageSilder
-                            height={135}
-                            autoplay={true}
-                            images={this.state.imgArr} 
-                        />
+                
+                    <View style={styles.samllText}>
+                        <Text style={{color: '#ccc', textAlign: 'center'}} >本平台不像学生提供贷款服务</Text>
                     </View>
-                    
-    
-                    <View style={styles.nav}>
-                        <Text style={styles.navText}>借款推荐</Text>
-                    </View>
-    
-                    <View style={{flex: 1}}>
-                        <ScrollView style={{flex: 1}}>
-                            {
-                                productList.map(function (item, index) {
-                                    return (
-                                        <Text key={index} onPress={_this._goInitLink.bind(_this)} style={[styles.proView, (index == productList.length - 1) ? styles.prodLast : '']}>
-                                            <Image style={styles.product} source={item}/>
-                                        </Text>
-                                    );
-                                })
-                            }
-                        </ScrollView>
-                    </View>
-                </View>
-            
-                <View style={styles.samllText}>
-                    <Text style={{color: '#ccc', textAlign: 'center'}} >本平台不像学生提供贷款服务</Text>
-                </View>
-            </View>    
+                </View>  
+            </SafeAreaView>  
         )
     }
    

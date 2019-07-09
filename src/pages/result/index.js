@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, SafeAreaView} from 'react-native';
 import { styles } from './styleCss';
 
 class Result extends Component {
