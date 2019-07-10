@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
     container: {
@@ -20,10 +21,12 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     bank_sel: {
+        position: 'relative',
         paddingLeft: 20,
         paddingRight: 20,
         paddingTop: 13,
         paddingBottom: 13,
+        width: '100%',
         height: 50,
         borderBottomWidth: 1,
         borderStyle: 'solid',
@@ -66,7 +69,8 @@ export const styles = StyleSheet.create({
         width: '100%',
         height: '50%',
         backgroundColor: '#fff',
-        zIndex: 11
+        zIndex: 11,
+        paddingBottom: 20
     },
     sel_nav: {
         position: 'relative',
@@ -102,7 +106,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomWidth: 1,
         borderColor: '#f5f5f5',
-        borderStyle: 'solid'
+        borderStyle: 'solid',
+        height: 60
     },
     bankImg_list: {
         width: 32,
@@ -138,8 +143,69 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         top: 0,
-        width: '100%',
-        height: '100%',
+        width: width,
+        height: 60,
         zIndex: 5
+    },
+    bank_sel_clk: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: width,
+        height: 50,
+        zIndex: 5
+    },
+    repay_amount: {
+        width: width,
+        height: 104,
+        borderBottomWidth: 1,
+        borderStyle: 'solid',
+        borderColor: '#f0f0f0',
+        backgroundColor: '#fff',
+        paddingLeft: 20,
+        paddingRight: 20
+    },
+    amount_inner: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    yen: {
+        color: '#222336',
+        fontSize: 16,
+        lineHeight: 22
+    },
+    account: {
+        fontSize: 36,
+        lineHeight: 50,
+        color: '#000118',
+        marginLeft: 13
+    },
+    cred: {
+        color: '#ff5656'
+    },
+    repay_des: {
+        height: 44,
+        backgroundColor: '#fff',
+        paddingLeft: 20,
+        paddingRight: 20,
+        marginBottom: 40
+    },
+    a_txt: {
+        height: 44,
+        lineHeight: 44,
+        fontSize: 12,
+        color: '#000117'
+    },
+    sure: {
+        marginLeft: 20,
+        marginRight: 20,
+        height: 50,
+        backgroundColor: '#567bff',
+        color: '#fff',
+        fontSize: 20,
+        borderRadius: 3,
+        textAlign: 'center',
+        lineHeight: 50
     }
 });

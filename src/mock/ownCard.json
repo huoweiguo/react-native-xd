@@ -1,0 +1,56 @@
+{
+    "respCode": "000000",
+    "respMsg": "获取数据成功",
+    "data": [
+        {
+            "cardId": "26252",
+            "bankName": "农业银行",
+            "smallText": "单笔金额≤5000元，单日金额≤5000元",
+            "bankCardId": "6352424356748272726",
+            "number": "4487",
+            "default": true,
+            "type": "储蓄卡",
+            "bankLogo":  "http://baijiajiekuan.oss-cn-shanghai.aliyuncs.com/bank-logo/icon3_zgnyyh3x.png"
+        },
+        {
+            "cardId": "21201",
+            "bankName": "工商银行",
+            "smallText": "单笔金额≤50000元，单日金额≤50000元",
+            "number": "8725",
+            "bankCardId": "6222424356748272726",
+            "default": false,
+            "type": "借记卡",
+            "bankLogo":  "https://baijiajiekuan.oss-cn-shanghai.aliyuncs.com/bank-logo/icon18_zggsyh.png"
+        },
+        {
+            "cardId": "13276",
+            "bankName": "中信银行",
+            "bankCardId": "6252424356748272726",
+            "smallText": "单笔金额≤50000元，单日金额≤50000元",
+            "number": "0000",
+            "default": false,
+            "type": "借记卡",
+            "bankLogo":  "http://baijiajiekuan.oss-cn-shanghai.aliyuncs.com/bank-logo/icon4_zxyh3x.png"
+        },
+        {
+            "cardId": "11234",
+            "bankName": "招商银行",
+            "bankCardId": "6352424356748272726",
+            "smallText": "单笔金额≤5000元，单日金额≤5000元",
+            "number": "9312",
+            "type": "储蓄卡",
+            "default": false,
+            "bankLogo":  "http://baijiajiekuan.oss-cn-shanghai.aliyuncs.com/bank-logo/icon2_zsyh3x.png"
+        },
+        {
+            "cardId": "11232",
+            "bankName": "广发银行",
+            "bankCardId": "6352424356748272726",
+            "smallText": "单笔金额≤100000元，单日金额≤200000元",
+            "number": "8888",
+            "type": "信用卡",
+            "default": false,
+            "bankLogo":  "http://baijiajiekuan.oss-cn-shanghai.aliyuncs.com/bank-logo/icon15_gfyh3x.png"
+        }
+    ]
+}

@@ -15,6 +15,8 @@ import RepayNext from './src/pages/repayNext';
 import RepayDetail2 from './src/pages/repayDetail2';
 import RepayDetail3 from './src/pages/repayDetail3';
 import Repayment from './src/pages/repayment';
+import RepayResult from  './src/pages/repayResult';
+import BankList from './src/pages/bankList';
 
 const AppNavigator = createStackNavigator({
     Login: {
@@ -93,9 +95,23 @@ const AppNavigator = createStackNavigator({
             title: '还款',
             headerBackTitle: null
         })
+    },
+    RepayResult: {
+        screen: RepayResult,
+        navigationOptions: ({navigation}) => ({
+            title: '还款结果',
+            headerBackTitle: null
+        })
+    },
+    BankList: {
+        screen: BankList,
+        navigationOptions: ({navigation}) => ({
+            title: '银行卡',
+            headerBackTitle: null
+        })
     }
 }, {
-    initialRouteName: 'Repayment' //login
+    initialRouteName: 'BankList' //login
 });
 
 export default createAppContainer(AppNavigator);
