@@ -17,6 +17,8 @@ import RepayDetail3 from './src/pages/repayDetail3';
 import Repayment from './src/pages/repayment';
 import RepayResult from  './src/pages/repayResult';
 import BankList from './src/pages/bankList';
+import BindCard from './src/pages/bindCard';
+import SelectBank from './src/pages/selectBank';
 
 const AppNavigator = createStackNavigator({
     Login: {
@@ -109,9 +111,23 @@ const AppNavigator = createStackNavigator({
             title: '银行卡',
             headerBackTitle: null
         })
+    },
+    BindCard: {
+        screen: BindCard,
+        navigationOptions: ({navigation}) => ({
+            title: '绑定银行卡',
+            headerBackTitle: null
+        })
+    },
+    SelectBank: {
+        screen: SelectBank,
+        navigationOptions: ({navigation}) => ({
+            title: '支持的银行卡和限额',
+            headerBackTitle: null
+        })
     }
 }, {
-    initialRouteName: 'BankList' //login
+    initialRouteName: 'Home' //login
 });
 
 export default createAppContainer(AppNavigator);

@@ -68,6 +68,11 @@ class BankList extends Component {
         }))
     }
 
+    //跳转到绑卡
+    addCard () {
+        this.props.navigation.navigate('BindCard');
+    }
+
     render () {
         const noCardComponent = (<View style={styles.no_bank_v}>
             <Image style={styles.no_bank_card} source={require('../../assets/icon_zwhk.png')}/>
@@ -134,7 +139,7 @@ class BankList extends Component {
                 }
 
                 <View style={styles.add_card_box}>
-                    <Text style={styles.add_card_mask}></Text>
+                    <Text style={styles.add_card_mask} onPress={this.addCard.bind(this)}></Text>
                     <Image style={styles.cross} source={require('../../assets/more_add.png')}/>
                     <Text style={styles.add_card_text}>添加银行卡</Text>
                     <Image style={styles.add_card_arrow} source={require('../../assets/right-arrow.png')}/>
