@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { styles } from './indexStyles';
 import Loan from '../loan';
-import My from '../my';
+import Center from '../center';
 import Repay from '../repay';
 import TabNavigator from 'react-native-tab-navigator';
 
@@ -23,7 +23,7 @@ class Home extends Component {
 
         let repayView = <Repay navigation={navigation}></Repay>;
 
-        let myView = <My navigation={navigation}></My>;
+        let myView = <Center navigation={navigation}></Center>;
 
         return (
             <TabNavigator>
@@ -47,11 +47,11 @@ class Home extends Component {
                 </TabNavigator.Item>
 
                 <TabNavigator.Item
-                    selected={this.state.selectedTab === 'My'}
+                    selected={this.state.selectedTab === 'Center'}
                     title="我的"
                     renderIcon={() => <Image style={styles.barImg} source={require('../../assets/icon3_user.png')} />}
                     renderSelectedIcon={() => <Image style={styles.barImg} source={require('../../assets/icon3_user_pre.png')} />}
-                    onPress={() => this.setState({ selectedTab: 'My' })}>
+                    onPress={() => this.setState({ selectedTab: 'Center' })}>
                     {myView}
                 </TabNavigator.Item>
             </TabNavigator>

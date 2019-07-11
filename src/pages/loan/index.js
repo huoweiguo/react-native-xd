@@ -14,7 +14,7 @@ class Loan extends Component {
                 'http://pic25.nipic.com/20121112/9252150_150552938000_2.jpg'
             ],
 
-            isLoan: true,
+            isLoan: false,
     
             productList: [
                 require('../../assets/cp1.png'),

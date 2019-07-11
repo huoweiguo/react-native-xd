@@ -30,6 +30,7 @@ class Init extends Component {
                     count: 0,
                     isShow: true
                 });
+                _this.props.navigation.navigate('LoanDetail');
 
             } else {
                 _this.setState({
