@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableHighlight, Platform } from 'react-native';
 import { styles } from './setPasswordStyle';
 import Password from '../../components/password';
 
@@ -10,8 +10,39 @@ class SetPassword extends Component {
             code: '',
             time: 60,
             getText: '',
-            smsStatus: false
+            smsStatus: false,
+            mobile: '',
+            device: '',
+            captchaId: '',
+            validate: ''
         }
+    }
+
+    validateLogin () {
+        const _this = this;
+        fetch('http://huopan-test.baijiajiekuan.com/api/preloan/userReg/checkAndSendMsg', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                phoneNum: _this.state.mobile,
+                merchantId: 'M007',
+                regChannelId: _this.state.device == 'ios' ? 'M007001' : 'M007000',
+                device: _this.state.device,
+                isLogin: 1,
+                captchaId: _this.state.captchaId,
+                validate: _this.state.validate
+              })
+        })
+            .then( res => { return res.json()})
+            .then( res => {
+                console.log(res);
+            })
+            .catch ( err => {
+                console.log(err);
+            })
     }
 
     _getSmsCode () {
@@ -34,13 +65,22 @@ class SetPassword extends Component {
         }, 1000);
     }
 
+    componentDidMount () {
+        const mobile = this.props.navigation.state.params.mobile;
+        this.setState({
+            mobile: mobile,
+            device: Platform.OS
+        });
+        this.validateLogin();
+    }
+
 
     render () {
         return (
             <View style={styles.container}>
                 <View>
                     <Text style={styles.title}>短信验证码</Text>
-                    <Text style={styles.smallText}>短信验证码已发送至15123059697</Text>
+                    <Text style={styles.smallText}>短信验证码已发送至{this.state.mobile}</Text>
                 </View>
                 <View>
                     <Password maxLength={4} isShow={true} onChange={value => {

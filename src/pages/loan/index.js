@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, SafeAreaView } from 'react-native';
 import { styles } from './styleCss';
 import ImageSilder from '../../components/imageSilder';
+import { urlAddress, token, merchantId, userId } from '../../../api';
+import queryString from 'querystring';
+
+console.log(queryString);
 
 class Loan extends Component {
     
@@ -29,6 +33,29 @@ class Loan extends Component {
         }
     }
 
+    getProduct () {
+        fetch(`${urlAddress}/product/queryProductListShowApp`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: queryString.stringify({
+                token: token,
+                merchantId: merchantId,
+                userId: userId
+            })
+        }).then( res => {
+            console.log(res, '111111');
+        })
+            .then( res => {
+                console.log(res);
+            })
+            .catch( err => {
+                console.log(err, '=======');
+            });
+    }
+    
+
     _goInitLink () {
         /**
          * REFUSE: 审核拒绝
@@ -41,6 +68,11 @@ class Loan extends Component {
         }
         
     }
+
+    componentDidMount() {
+      this.getProduct();
+    }
+    
 
     
     render () {
@@ -86,13 +118,15 @@ class Loan extends Component {
                                         );
                                     })
                                 }
+
+                                <View style={styles.samllText}>
+                                    <Text style={{color: '#ccc', textAlign: 'center'}} >本平台不像学生提供贷款服务</Text>
+                                </View>
                             </ScrollView>
                         </View>
                     </View>
                 
-                    <View style={styles.samllText}>
-                        <Text style={{color: '#ccc', textAlign: 'center'}} >本平台不像学生提供贷款服务</Text>
-                    </View>
+                   
                 </View>  
             </SafeAreaView>  
         )

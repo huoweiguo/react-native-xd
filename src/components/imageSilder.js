@@ -5,11 +5,13 @@ import {
     StyleSheet,
     PanResponder,
     Animated,
-    Dimensions,
     Image,
     Text,
-    TouchableHighlight
+    TouchableHighlight,
+    Dimensions
 } from 'react-native';
+
+const {width} = Dimensions.get('window');
 
 
 /**
@@ -182,7 +184,7 @@ export default class ImageSlider extends Component {
         this.width = this.props.width ? this.props.width : Dimensions.get('window').width;
         this.height = this.props.height ? this.props.height : this.defaultOption.height;
         return (
-            <View  style={{width: 335, height:135, marginLeft: 20, overflow: 'hidden'}}>
+            <View  style={{width: width - 40, height:135, marginLeft: 20, overflow: 'hidden'}}>
                 <Animated.View
                     style={{
                         height: this.height,

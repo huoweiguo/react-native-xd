@@ -24,8 +24,14 @@ class Login extends Component {
     }
 
     _getSmsCode () {
+        const mobileExp = /^1[3|4|5|7|8][0-9]{9}/;
         const { navigate } = this.props.navigation;
-        return navigate('SetCode')
+
+        if (mobileExp.test(this.state.inputValue)) {
+            navigate('SetCode',{
+                mobile: this.state.inputValue
+            });
+        }
     }
 
     changeText (text) {
@@ -42,6 +48,10 @@ class Login extends Component {
             });
         }
     }
+
+    componentDidMount() {
+    }
+    
 
     render () {
         return (
@@ -147,7 +157,6 @@ const styles = StyleSheet.create({
     },
 
     smsBtn: {
-        width: 315,
         height: 46,
         borderRadius: 2,
         marginBottom: 30

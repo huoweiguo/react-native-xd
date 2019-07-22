@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         top: 0,
-        width: 375,
+        width: '100%',
         height: 167,
         backgroundColor: '#567bff'
     },
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
         marginRight: 10
     },
     nav_title: {
-        width: 355,
+        width: '100%',
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
@@ -48,13 +48,13 @@ export const styles = StyleSheet.create({
         paddingBottom: 40
     },
     loan_msg: {
-        width: 355,
+        width: "100%",
         height: 140,
         backgroundColor: '#fff'
     },
     msg_top: {
         flexDirection: 'row',
-        width: 355,
+        width: '100%',
         height: 91,
         paddingTop: 20,
         borderBottomWidth: 1,
@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
         borderStyle: 'solid'
     },
     msg: {
-        width: 177
+        width: '50%'
     },
     msg_name: {
         lineHeight: 17,
@@ -130,7 +130,6 @@ export const styles = StyleSheet.create({
     loan_btn: {
         marginLeft: 10,
         marginRight: 10,
-        width: 335,
         backgroundColor: '#567bff'
     },
     btnText:{
@@ -200,6 +199,7 @@ export const styles = StyleSheet.create({
         borderStyle: 'solid'
     },
     btn_txt1: {
+        width: '50%',
         textAlign: 'center',
         height: 62,
         lineHeight: 62,
@@ -207,6 +207,7 @@ export const styles = StyleSheet.create({
         fontSize: 18
     },
     btn_txt2: {
+        width: '50%',
         color: '#567bff',
         fontSize: 18,
         textAlign: 'center',

@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: '#fff',
-        marginBottom: 70
+        backgroundColor: '#fff'
     },
     geolocation: {
         flexDirection: 'row',
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
         fontWeight: '500'
     },
     product: {
-        width: 335,
+        width: width - 40,
         height: 67
     },
     proView: {

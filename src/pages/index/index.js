@@ -26,7 +26,7 @@ class Home extends Component {
         let myView = <Center navigation={navigation}></Center>;
 
         return (
-            <TabNavigator>
+            <TabNavigator tabBarStyle={{ backgroundColor: '#fff'}}>
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'Loan'}
                     title="借款"

@@ -85,7 +85,7 @@ class BankList extends Component {
                 <Text style={styles.prompt_t1}>默认卡是你借款成功后的到账银行卡</Text>
             </View>
 
-            <ScrollView style={{flex: 1}}>
+            
             {
                 this.state.cardList.map( item => {
                     return (
@@ -125,25 +125,25 @@ class BankList extends Component {
                 })
             }
 
-            </ScrollView>
-
         </View>);
 
         return (
             <View style={styles.container}>
+                <ScrollView style={{flex: 1}}>
 
-                {/**no bankCard */}
+                    {/**no bankCard */}
 
-                {
-                    this.state.cardList.length > 0 ? cardListComponent : noCardComponent
-                }
+                    {
+                        this.state.cardList.length > 0 ? cardListComponent : noCardComponent
+                    }
 
-                <View style={styles.add_card_box}>
-                    <Text style={styles.add_card_mask} onPress={this.addCard.bind(this)}></Text>
-                    <Image style={styles.cross} source={require('../../assets/more_add.png')}/>
-                    <Text style={styles.add_card_text}>添加银行卡</Text>
-                    <Image style={styles.add_card_arrow} source={require('../../assets/right-arrow.png')}/>
-                </View>
+                    <View style={styles.add_card_box}>
+                        <Text style={styles.add_card_mask} onPress={this.addCard.bind(this)}></Text>
+                        <Image style={styles.cross} source={require('../../assets/more_add.png')}/>
+                        <Text style={styles.add_card_text}>添加银行卡</Text>
+                        <Image style={styles.add_card_arrow} source={require('../../assets/right-arrow.png')}/>
+                    </View>
+                </ScrollView>
 
                 {/**设置默认卡弹框 */}    
                 <Modal animationType="silde"  visible={this.state.visible} transparent={true}>

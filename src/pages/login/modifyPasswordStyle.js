@@ -49,7 +49,6 @@ export const styles = StyleSheet.create({
     },
 
     smsBtn: {
-        width: 315,
         height: 46,
         borderRadius: 2,
         marginBottom: 30,
