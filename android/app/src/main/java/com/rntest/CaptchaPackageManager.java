@@ -1,7 +1,5 @@
 package com.rntest;
 
-import android.app.Activity;
-import android.content.Context;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

@@ -19,6 +19,7 @@ import RepayResult from  './src/pages/repayResult';
 import BankList from './src/pages/bankList';
 import BindCard from './src/pages/bindCard';
 import SelectBank from './src/pages/selectBank';
+import Agreement from './src/pages/agreement';
 
 const AppNavigator = createStackNavigator({
     Login: {
@@ -125,9 +126,16 @@ const AppNavigator = createStackNavigator({
             title: '支持的银行卡和限额',
             headerBackTitle: null
         })
+    },
+    Agreement: {
+        screen: Agreement,
+        navigationOptions: ({navigation}) => ({
+            title: '',
+            headerBackTitle: null
+        })
     }
 }, {
-    initialRouteName: 'Home' //login
+    initialRouteName: 'LoanDetail' //login
 });
 
 export default createAppContainer(AppNavigator);

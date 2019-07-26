@@ -55,7 +55,6 @@ export const styles = StyleSheet.create({
     },
     proView: {
         flex: 1,
-        paddingBottom: 15,
         marginBottom: 15,
         borderBottomWidth: 1,
         borderStyle: 'solid',

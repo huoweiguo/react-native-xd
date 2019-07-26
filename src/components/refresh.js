@@ -34,7 +34,7 @@ class Refresh extends Component {
                 var offsetY = e.nativeEvent.contentOffset.y; //滑动距离
                 var contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
                 var oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
-                if (offsetY + oriageScrollHeight >= contentSizeHeight - 200) {
+                if (offsetY + oriageScrollHeight >= contentSizeHeight - 100) {
                     // 滑动距离底部只有200高度，调用加载方法
                     this.loadMore();
                 }

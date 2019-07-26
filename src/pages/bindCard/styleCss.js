@@ -58,25 +58,33 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: 0,
-        width: 70,
+        width: 100,
         height: 50,
         lineHeight: 50,
-        color: '#567bff'
+        color: '#567bff',
+        textAlign: "right"
     },
     ipt: {
         width: 247,
-        height: 50,
-        lineHeight: 50
+        height: 50
     },
     bind_btn_set: {
         marginLeft: 20,
         marginRight: 20,
         height: 50,
-        backgroundColor: '#bbcaff',
         borderRadius: 5,
         marginBottom: 20
     },
     bind_btn: {
+        backgroundColor: '#bbcaff',
+        color: '#fff',
+        width: '100%',
+        lineHeight: 50,
+        textAlign: 'center',
+        fontSize: 20
+    },
+    bind_act: {
+        backgroundColor: '#567bff',
         color: '#fff',
         width: '100%',
         lineHeight: 50,
@@ -88,5 +96,8 @@ export const styles = StyleSheet.create({
         color: '#567bff',
         fontSize: 14,
         paddingBottom: 20
+    },
+    sms_gray: {
+        color: '#999'
     }
 });

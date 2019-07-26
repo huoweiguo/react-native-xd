@@ -22,14 +22,14 @@ class Result extends Component {
     componentDidMount() {
         const params = this.props.navigation.state.params;
         this.setState({
-            result: params.status,
+            result: params.result,
             smallText: params.smallText,
-            bankName: params.bankName,
-            endOfNumber: params.endOfNumber,
-            loanAmt: params.loanAmt,
-            arrivalAmt: params.arrivalAmt
+            bankName: params.bankName || "",
+            endOfNumber: params.endOfNumber || "",
+            loanAmt: params.loanAmt || "",
+            arrivalAmt: params.arrivalAmt || ""
         });
-        if (params.status === 'success') {
+        if (params.result === 'success') {
             
         }
     }
@@ -39,7 +39,6 @@ class Result extends Component {
         const accountBankComponent = (
             <View>
                 <View style={styles.bank_detail}>
-                
                     <View style={styles.bank_deal}>
                         <View style={styles.bank_left}>
                             <Text style={styles.txt1}>账单详情</Text>
@@ -83,7 +82,7 @@ class Result extends Component {
                 <View style={styles.content}>
                     <View style={styles.outerImg}>
                         {
-                            this.state.result !== 'faild' 
+                            (this.state.result !== 'faild' &&  this.state.result !== 'refuse' && this.state.result !== 'over')
                                 ? (<Image style={styles.result_img} source={require('../../assets/icon_cg.png')}/>)
                                 : (<Image style={styles.result_img} source={require('../../assets/icon_sb.png')}/>)
                         }
@@ -94,7 +93,8 @@ class Result extends Component {
                             this.state.result === 'success' ? '借款成功' : 
                             this.state.result === 'deal' ? '正在处理中...' :
                             this.state.result === 'over' ? '来晚了!今日额度已放完' :
-                            this.state.result === 'faild' ? '借款失败' : ''
+                            this.state.result === 'faild' ? '借款失败' : 
+                            this.state.result === 'refuse' ? '审核未通过' : ''
                         }
                     </Text>
                     <Text style={styles.nav_small}>{this.state.smallText}</Text>

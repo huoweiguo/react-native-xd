@@ -1,7 +1,5 @@
 package com.rntest;
 
-import android.app.Activity;
-import android.widget.Toast;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;

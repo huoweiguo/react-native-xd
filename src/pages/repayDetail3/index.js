@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView} from 'react-native';
 import { styles } from './stylsCss';
-import { linkAddress } from '../../../api';
+import { postAddress, token, userId, merchantId } from '../../../api';
 import Toast from 'react-native-easy-toast';
+import queryString from 'querystring';
 
 class RepayDetail3 extends Component {
     constructor (props) {
@@ -16,13 +17,15 @@ class RepayDetail3 extends Component {
 
     renderList () {
         const _this = this;
-        fetch(`${linkAddress}/src/mock/expect.json`)
-            .then( res => { return res.json() })
+        let t = new Date().getTime();
+        let sysSeqId = this.props.navigation.state.params.sysSeqId;
+        let url = `${postAddress}/plan/detail?token=${token}&userId=${userId}&merchantId=${merchantId}&billOrderId=${sysSeqId}&t=${t}`;
+        fetch(url).then( res => { return res.json() })
             .then( res => {
+                console.log(res);
                 if (res.respCode === '000000') {
                     _this.setState( _=> ({
-                        amount: res.amount,
-                        once: res.once,
+                        once: res.data.length && res.data[0].loanTotalPeriods,
                         list: res.data
                     }));
                 } else {
@@ -33,6 +36,13 @@ class RepayDetail3 extends Component {
                 console.error(error);
             })
 
+    }
+
+    lookDetail (sysSeqId) {
+        let { navigate } = this.props.navigation;
+        navigate('RepayDetail2', {
+            singleRepayPlanId: sysSeqId
+        });
     }
 
     componentDidMount () {
@@ -46,12 +56,12 @@ class RepayDetail3 extends Component {
                 <View style={styles.header_nav}>
                     <Image style={styles.icon_nav} source={require('../../assets/icon_yyq.png')}/>
                     <Text style={styles.small_title}>已经结清总额(元)</Text>
-                    <Text style={styles.amount}>1588.95</Text>
-                    <Text style={styles.small_des}>对应<Text style={{color: '#ff5656'}}>5笔</Text>借款</Text>
+                    <Text style={styles.amount}>{this.props.navigation.state.params.pendingRepayAmt}</Text>
+                    <Text style={styles.small_des}>对应<Text style={{color: '#ff5656'}}>{this.state.once}笔</Text>借款</Text>
                 </View>
 
                 {/**说明分割 */}
-                <Text style={styles.split_des}>共5笔</Text>
+                <Text style={styles.split_des}>共{this.state.once}笔</Text>
                    
                 {/**repay list */}
                 <ScrollView style={{flex: 1}}>
@@ -59,10 +69,16 @@ class RepayDetail3 extends Component {
                         this.state.list.map( item => {
                             return (
                                 <View key={item.id} style={styles.repay_list}>
-                                    <View style={styles.repay_t1}><Text style={styles.v3}>本息已还款</Text><Text style={styles.v4}>{item.r_count}元</Text></View>
-                                    <View style={styles.repay_t2}><Text style={styles.v1}>借款金额</Text><Text style={styles.v1}>{item.l_count}元</Text></View>
-                                    <View style={styles.repay_t2}><Text style={styles.v1}>借款期限</Text><Text style={styles.v1}>{item.date}</Text></View>
-                                    <View style={styles.repay_t2}><Text style={styles.v1}>还款详情</Text><Text style={styles.v2}>点击查看</Text></View>
+                                    <View style={styles.repay_t1}><Text style={styles.v3}>本息已还款</Text><Text style={styles.v4}>{item.actualRepayAmt}元</Text></View>
+                                    <View style={styles.repay_t2}><Text style={styles.v1}>借款金额</Text><Text style={styles.v1}>{item.periodsPortAmt}元</Text></View>
+                                    <View style={styles.repay_t2}>
+                                        <Text style={styles.v1}>借款期限</Text>
+                                        <Text style={styles.v1}>
+                                            {item.loanPeriodsTimes}
+                                            {item.loanPeriodsUnit === 'MONTH' ? '月' : item.loanPeriodsUnit === 'WEEK' ? '周' : item.loanPeriodsUnit === 'DAY' ? '天' : ''}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.repay_t2}><Text style={styles.v1}>还款详情</Text><Text style={styles.v2} onPress={this.lookDetail.bind(this,item.sysSeqId)}>点击查看</Text></View>
                                 </View>
                             )
                         })

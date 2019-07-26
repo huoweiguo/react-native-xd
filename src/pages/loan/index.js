@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, SafeAreaView } from 'react-native';
 import { styles } from './styleCss';
 import ImageSilder from '../../components/imageSilder';
-import { urlAddress, token, merchantId, userId } from '../../../api';
+import { preAddress, token, merchantId, userId, userName } from '../../../api';
 import queryString from 'querystring';
-
-console.log(queryString);
+import Toast from 'react-native-easy-toast';
 
 class Loan extends Component {
     
@@ -18,55 +17,99 @@ class Loan extends Component {
                 'http://pic25.nipic.com/20121112/9252150_150552938000_2.jpg'
             ],
 
+            productId: '',
+            userName: '',
+            productName: '',
             isLoan: false,
-    
-            productList: [
-                require('../../assets/cp1.png'),
-                require('../../assets/cp2.png'),
-                require('../../assets/cp1.png'),
-                require('../../assets/cp2.png'),
-                require('../../assets/cp1.png'),
-                require('../../assets/cp2.png'),
-                require('../../assets/cp1.png'),
-                require('../../assets/cp2.png')
-            ]
+            productList: []
         }
     }
 
     getProduct () {
-        fetch(`${urlAddress}/product/queryProductListShowApp`, {
+        const _this = this;
+        fetch(`${preAddress}/product/queryProductListShowApp`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                token: token
             },
             body: queryString.stringify({
-                token: token,
                 merchantId: merchantId,
                 userId: userId
             })
-        }).then( res => {
-            console.log(res, '111111');
-        })
+        }).then( res => res.json())
             .then( res => {
                 console.log(res);
+                if (res.respCode == '000000') {
+                    _this.setState({
+                        productList: res.data
+                    })
+                } else {
+                    _this.refs.toast.show(res.respMsg);
+                }
             })
             .catch( err => {
-                console.log(err, '=======');
+                console.log(err);
             });
     }
     
 
-    _goInitLink () {
+    _goInitLink (obj) {
         /**
          * REFUSE: 审核拒绝
          * SUCCESS: 通过
          *  */
-        if (this.state.isLoan) {
-            this.props.navigation.navigate('Result', { result: 'REFUSE'});
-        } else {
-            this.props.navigation.navigate('InitPage');
-        }
-        
+
+        this.setState({
+            productId: obj.productId,
+            productName: obj.productName,
+            userName: userName
+        })
+
+         if (!obj.hasPassAndNotAcceptFlag) {
+             this.isBindCard();
+         } else {
+            this.props.navigation.navigate('LoanDetail');
+         }
+
+        /*this.props.navigation.navigate('Result', { result: 'REFUSE'});*/ 
+    }
+
+    isBindCard () {
+        let _this = this,
+            {navigate} = this.props.navigation,
+            t = new Date().getTime(),
+            url = `${preAddress}/bankCard/query?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`
+        fetch(url,{
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                userId: userId,
+                merchantId: merchantId
+            })
+        })
+        .then( res => res.json() )
+        .then( res => {
+            if (res.respCode === '000000') {
+                    let { productId, userName, productName } = _this.state;
+                    if (res.data.length > 0) {
+                        navigate('InitPage', {
+                            productId,
+                            userName,
+                            productName
+                        });
+                    } else {
+                        navigate('BankList')
+                    }
+            } else {
+                _this.refs.toast.show(res.respMsg);
+            }
+        })
+        .catch( err => {
+            console.log(err);
+        })
     }
 
     componentDidMount() {
@@ -112,8 +155,8 @@ class Loan extends Component {
                                 {
                                     productList.map(function (item, index) {
                                         return (
-                                            <Text key={index} onPress={_this._goInitLink.bind(_this)} style={[styles.proView, (index == productList.length - 1) ? styles.prodLast : '']}>
-                                                <Image style={styles.product} source={item}/>
+                                            <Text key={index} onPress={_this._goInitLink.bind(_this, item)} style={[styles.proView, (index == productList.length - 1) ? styles.prodLast : '']}>
+                                                <Image style={styles.product} source={{uri:item.imageUrl}}/>
                                             </Text>
                                         );
                                     })
@@ -126,8 +169,9 @@ class Loan extends Component {
                         </View>
                     </View>
                 
-                   
+                    <Toast position="center" ref="toast"/>
                 </View>  
+                
             </SafeAreaView>  
         )
     }

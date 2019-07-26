@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, Dimensions } from 'react-native';
+const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -51,11 +51,20 @@ export const styles = StyleSheet.create({
     },
 
     repayList: {
+        position: 'relative',
         height: 115,
         backgroundColor: '#fff',
         marginBottom: 15,
         paddingLeft: 20,
         paddingRight: 20
+    },
+    innerClick: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        height: 115,
+        width: width,
+        zIndex: 10
     },
     rarrow: {
         width: 10,
@@ -106,5 +115,54 @@ export const styles = StyleSheet.create({
     },
     blueText: {
         color: '#567bff'
+    },
+    isBottom: {
+        textAlign: 'center',
+        paddingTop: 10,
+        paddingBottom: 20,
+        color: '#999'
+    },
+    order_mask: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: width,
+        height: height,
+        backgroundColor: '#000',
+        opacity: 0.65
+    },
+    order_view: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        width: 295,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        marginLeft: -147,
+        marginTop: -158
+    },
+    order_img: {
+        width: "100%",
+        height: 227
+    },
+    order_text_mask: {
+        width: 212,
+        height: 36,
+        backgroundColor: '#567bff',
+        color: '#fff',
+        lineHeight: 36,
+        textAlign: 'center',
+        fontSize: 14
+    },
+    mask_Text1: {
+        width: 212,
+        height: 36,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 25,
+        marginBottom: 25,
+        borderRadius: 21,
+        overflow: 'hidden'
     }
 });

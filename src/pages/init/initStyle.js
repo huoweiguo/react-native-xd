@@ -83,6 +83,15 @@ export const styles = StyleSheet.create({
         color: '#fff',
         lineHeight: 44,
         textAlign: 'center'
+    },
+    amount: {
+        fontSize: 35,
+        fontWeight: '600'
+    },
+    yen: {
+        fontSize: 14,
+        fontWeight: "300",
+        paddingRight: 7
     }
         
 });

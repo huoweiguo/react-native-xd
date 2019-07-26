@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableHighlight, Alert } from 'react-native';
-import Refresh from '../../components/refresh';
-import { linkAddress }  from '../../../api';
+import { View, Text, Image, TouchableHighlight, Modal, ScrollView, DeviceEventEmitter} from 'react-native';
+import { postAddress, token, userId, merchantId }  from '../../../api';
+import Toast from 'react-native-easy-toast';
 import { styles } from './styleCss';
 
 class Repay extends Component {
@@ -11,7 +11,11 @@ class Repay extends Component {
         this.state = {
             isData: true,
             list: [],
-            current: 1
+            current: 1,
+            pages: 100,
+            count: 0,
+            isBottom: false,
+            visible: false
         }
     }
     
@@ -25,39 +29,50 @@ class Repay extends Component {
         }
     }
 
-    _goLoan () {
-        Alert.alert(this.state.isData);
-    }
-
-    bindData (pageNum, pageSize, result) {
-        let _this = this;
-        setTimeout(() => {
-            // 执行回调方法
-            // 第一个参数为Refresh所需要的data,第二个参数为分页需要的数据的总个数
-            result(_this.state.list, 100);
-        }, 2000);
-    }
+    _goLoan () {}
 
     //渲染还款数据
-    getRepayList () {
+    getRepayList (current) {
         const _this = this;
-        fetch(`${linkAddress}/src/mock/repay.json`)
-        .then( res => { return res.json();})
+        fetch(`${postAddress}/loan/queryBillOrderList`, {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json",
+                token: token
+            },
+            body: JSON.stringify({
+                userId: userId,
+                merchantId: merchantId,
+                size: 10,
+                current: current
+            })
+        }).then( res => res.json())
         .then( res => {
-            if (res.errorCode === '000000') {
-                if (res.data.length == 0 && _this.state.current == 1) {
+            if (res.respCode == '000000') {
+                if (res.data.records.length == 0 && _this.state.current == 1) {
                     _this.setState(_ = ({
-                        isData: false
+                        isData: false,
+                        list: [],
+                        pages: 1,
+                        count: 0
                     }))
                 } else {
+                    const listArr = [..._this.state.list, ...res.data.records];
                     _this.setState( _ => ({
                         isData: true,
-                        list: res.data
+                        list: listArr,
+                        pages: res.data.pages,
+                        count: res.data.total
                     }));
+                    if (res.data.records.length < 10) {
+                        _this.setState({
+                            isBottom: true
+                        })
+                    }
                 }
                 
-            } else {
-                Alert.alert(res.message);
+            } else { 
+                _this.refs.toast.show(res.respMsg);
             }
         })
         .catch( err => {
@@ -66,9 +81,86 @@ class Repay extends Component {
         .done();
     }
 
-    componentDidMount () {
-        this.getRepayList();
+    componentDidMount() {
+        const _this = this;
+        this.subscription = DeviceEventEmitter.addListener('renderRepayList', () => {
+            _this.getRepayList(1);
+        })
     }
+
+    componentWillUnmount() {
+        this.subscription.remove();
+    }    
+
+    scrollViews (e) {
+        var offsetY = e.nativeEvent.contentOffset.y; //滑动距离
+        var contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
+        var oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
+        if (offsetY + oriageScrollHeight >= contentSizeHeight - 200) {
+            // 滑动距离底部只有200高度，调用加载方法
+            if (this.state.current > this.state.pages) {
+                return false;
+            }
+            this.setState({
+                current: this.state.current + 1
+            });
+            this.getRepayList(this.state.current);
+        }
+    }
+
+    linkgoto (status,loanPeriods, SingleIdAndAmt) {
+
+        let idAndAmt = SingleIdAndAmt.split('-');
+
+        let { navigate } = this.props.navigation;
+        if (status === 'P') {
+            this.setState({
+                visible: true
+            });
+        }
+
+        if (status === 'S' && loanPeriods !== '天') {
+            let moreAndOver = idAndAmt[1].split('|');
+            navigate('RepayDetail3', {
+                sysSeqId: moreAndOver[0],
+                pendingRepayAmt: moreAndOver[1]
+            });
+            return false;
+        }
+
+        if (status === 'S' && loanPeriods === '天') {
+            navigate('RepayDetail2', {
+                singleRepayPlanId: idAndAmt[0]
+            });
+            return false;
+        }
+
+        if (status === 'W' && loanPeriods === '天') {
+            let singleAndUse = idAndAmt[2].split('|');
+            console.log(singleAndUse [1]);
+            navigate('RepayDetail', {
+                sysSeqId: singleAndUse [1],
+                singleRepayPlanId: singleAndUse [0]
+            });
+            return false;
+        }
+
+        if (status === 'W' && loanPeriods !== '天') {
+            let moreAndUse = idAndAmt[3].split('|');
+            navigate('RepayNext', {
+                sysSeqId: moreAndUse[0],
+                repayAmt: moreAndUse[1]
+            });
+            return false;
+        }
+    }
+
+    iSee () {
+        this.setState({
+            visible: false
+        });
+    }
+    
 
     render () {
         let { isData } = this.state;
@@ -88,12 +180,14 @@ class Repay extends Component {
 
         const listComponent = (
             <View style={{flex: 1}}>
-                
-                <Refresh render={({ item }) => {
-                    return (
-                        <View style={styles.repayList} key={item.id}>
+                {
+                    this.state.list.map( item => {
+                        return (<View style={styles.repayList} key={item.id}>
+                            <Text onPress={this.linkgoto.bind(this,item.status, item.loanPeriods[item.loanPeriods.length-1], 
+                                `${item.singleRepayPlanId}-${item.sysSeqId}|${item.repayAmt}-${item.sysSeqId}|${item.singleRepayPlanId}-${item.sysSeqId}|${item.pendingRepayAmt}` )} 
+                                style={styles.innerClick} data-pid={item.productId}></Text>
                             <View style={styles.list_nav}>
-                                <Text style={styles.title}>{item.name}</Text>
+                                <Text style={styles.title}>{item.productName}</Text>
                                 <View style={styles.applicable}>
                                     <Text style={[styles.status, item.status === 'W' ? styles.blueText : '']}>
                                         {item.status === 'P' ? '锁定中': item.status === 'W' ? '使用中' : item.status === 'S' ? '已结清' : ''}
@@ -106,19 +200,20 @@ class Repay extends Component {
                                     <Text style={styles.fsty}>
                                         {item.status === 'S' ? '已还总额(元)' : '未还总额(元)'}
                                     </Text>
-                                    <Text style={styles.money}>{item.amount}</Text>
+                                    <Text style={styles.money}>{item.status === 'S' ?  item.repayAmt : item.pendingRepayAmt}</Text>
                                 </View>
                                 <View>
-                                    <Text style={styles.fsty}>借款期数: {item.period}</Text>
-                                    <Text style={[styles.fsty, styles.mt6]}>借款日期: {item.date}</Text>
+                                    <Text style={styles.fsty}>借款期数: {item.loanPeriods}</Text>
+                                    <Text style={[styles.fsty, styles.mt6]}>借款日期: {item.loanDate}</Text>
                                 </View>
                             </View>
-                        </View>
-                    )
-                }}
-                pageSize={10}
-                method={this.bindData.bind(this)} />
-                
+                        </View>)
+                    })
+                }
+                {
+                    this.state.isBottom ? (<View><Text style={styles.isBottom}>已经到底了...</Text></View>) : (<View></View>)
+                }
+                 
             </View>
         );
 
@@ -128,10 +223,21 @@ class Repay extends Component {
                     <Text style={styles.titleText}>还款</Text>
                 </View>
 
-                {
-                    isData ? listComponent : nodataComponent   
-                }
-
+                <ScrollView onScroll={this.scrollViews.bind(this)} style={{flex: 1}}>
+                    {
+                        isData ? listComponent : nodataComponent   
+                    }
+                </ScrollView>
+                <Modal animationType="silde"  visible={this.state.visible} transparent={true}>
+                    <View style={styles.order_mask}></View>
+                    <View style={styles.order_view}>
+                        <Image style={styles.order_img} source={require('../../assets/dealOrder.png')}/>
+                        <View style={styles.mask_Text1}><Text onPress={this.iSee.bind(this)} style={styles.order_text_mask}>知道了</Text></View>
+                    </View>
+                </Modal>
+                    
+                <Toast position="center" ref="toast"/>    
+            
             </View>
         )
     }

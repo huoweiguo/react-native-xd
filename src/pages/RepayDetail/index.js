@@ -1,55 +1,131 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
+import { postAddress, token, userId, merchantId } from '../../../api';
 import { styles } from './styleCss';
+import Toast, {DURATION} from 'react-native-easy-toast';
 
 class RepayDetail extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            smallText: '03月15日应还款(元)',
-            amount: 1208.79,
-            peroid: '7天',
-            loanDate: '2019年03月15日',
-            baseAmount: 1200,
-            rate: 8.79,
-            beOverdue: '0.00',
-            payment: '一次性本息',
-            extends: true,  //是否展期
-            isRepaymentDate: false  //是否是还款日
+            currentRepayDate: '',
+            currentShouldRepayTotalAmt: 0,
+            totalPeriods: 0,
+            currentPeriods: 0,
+            currentCapital: 0,
+            currentInterest: 0,
+            overdueAmt: 0,
+            periodsSubstractAmt: 0,
+            actualRepayAmt: 0,
+            currentLoanDate: '',
+            todayIsRepay: '',
+            overdueStatus: '',
+            overdueDay: 0,
+            isExtends: false,  //是否展期
         }
     }
 
     repayExtends () {
-        this.props.navigation.navigate('extendDate');
+        let { navigate } = this.props.navigation;
+        let { sysSeqId, singleRepayPlanId } = this.props.navigation.state.params;
+        navigate('extendDate', {
+            billOrderId: singleRepayPlanId,
+            repayPlanId: sysSeqId,
+            periods:  this.state.currentPeriods
+        });
     }
+
+    renderDetail () {   
+        const _this = this;
+        let t = new Date().getTime();
+        let url = `${postAddress}/loan/queryBillRepayPlanDetail?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                repayPlanId: _this.props.navigation.state.params.sysSeqId
+            })
+        }).then( res => res.json())
+            .then( res => {
+                if (res.respCode === '000000') {
+                    let data = res.data;
+                    this.setState({
+                        currentRepayDate: data.currentRepayDate,
+                        currentShouldRepayTotalAmt: data.currentShouldRepayTotalAmt,
+                        isExtends: data.isExtends,
+                        currentLoanDate: data.currentLoanDate,
+                        currentPeriods: data.currentPeriods,
+                        totalPeriods: data.totalPeriods,
+                        currentCapital: data.currentCapital,
+                        currentInterest: data.currentInterest,
+                        overdueAmt: data.overdueAmt,
+                        periodsSubstractAmt: data.periodsSubstractAmt,
+                        actualRepayAmt: data.actualRepayAmt,
+                        overdueStatus: data.overdueStatus,
+                        todayIsRepay: data.todayIsRepay,
+                        overdueDay: data.overdueDay
+                    });
+                   
+                } else {
+                    _this.refs.toast.show(res.respMsg);
+                }
+            })
+            .catch( err => {
+                console.log(err);
+            });
+    }
+
+    quickRepay (amt) {
+        let { navigate } = this.props.navigation;
+        navigate('Repayment', {
+            billOrderId: this.props.navigation.state.params.billOrderId || this.props.navigation.state.params.singleRepayPlanId,
+            sysSeqId: this.props.navigation.state.params.sysSeqId,
+            periods: this.state.currentPeriods,
+            amt: amt,
+            tradeType: 'HK'
+        });
+    }
+
+    componentDidMount() {
+        this.renderDetail();
+    }
+    
 
     render () {
         return (
             <View style={styles.container}>
                 <View style={styles.repay_header}>
-                    <Text style={styles.smallText}>{this.state.smallText}</Text>
-                    <Text style={styles.amount}>{this.state.amount}</Text>
+                    <Text style={styles.smallText}>{this.state.currentRepayDate}应还款(元)</Text>
+                    <Text style={styles.amount}>{this.state.currentShouldRepayTotalAmt}</Text>
 
                     {/**是否是还款日 */}
 
                     {
-                        this.state.isRepaymentDate 
+                        this.state.overdueStatus !== 'O' && !this.state.todayIsRepay ? 
+                        (<View style={styles.small_view}>
+                            <Image style={styles.amaze} source={require('../../assets/icon_taps.png')}/>
+                            <Text style={styles.small_prompt}>确保到期资金充足, 请按时还款</Text>
+                        </View>)
+                        : this.state.overdueStatus !== 'O' && this.state.todayIsRepay
                         ? (<View style={styles.small_view}>
                                 <Image style={styles.amaze} source={require('../../assets/icon_taps_red.png')}/>
                                 <Text style={[styles.small_prompt, styles.cred]}>今日是还款日，请尽快还款以免对征信产生影响</Text>
                             </View>) 
                         : (<View style={styles.small_view}>
-                                <Image style={styles.amaze} source={require('../../assets/icon_taps.png')}/>
-                                <Text style={styles.small_prompt}>确保到期资金充足, 请按时还款</Text>
-                            </View>)
+                            <Image style={styles.amaze} source={require('../../assets/icon_taps_red.png')}/>
+                                <Text style={[styles.small_prompt, styles.cred]}>您已逾期{this.state.overdueDay}天,请尽快还款以免对征信产生影响</Text>
+                        </View>)
                     }
                 
-                    <Text style={styles.btn1}>确认还款</Text>
+                    <Text style={styles.btn1} onPress={this.quickRepay.bind(this, this.state.currentShouldRepayTotalAmt)}>确认还款</Text>
                 </View>
 
                 {/**展期还款 */}
                 {
-                    this.state.extends ? (
+                    this.state.isExtends ? (
                         <View style={styles.strentch}>
                             <Text style={styles.linkMask} onPress={this.repayExtends.bind(this)}></Text>
                             <View>
@@ -66,11 +142,16 @@ class RepayDetail extends Component {
                 <View style={styles.loan_det}>
                     <View style={styles.loan_cont}>
                         <View>
-                            <Text style={styles.loan_amount}>{this.state.amount}元</Text>
-                            <Text style={styles.loan_date}>{this.state.loanDate}借 | {this.state.peroid}</Text>
+                            <Text style={styles.loan_amount}>{this.state.currentShouldRepayTotalAmt}元</Text>
+                            <Text style={styles.loan_date}>
+                                {this.state.currentLoanDate}借 |
+                                {this.state.totalPeriods > 1 ? `共${this.state.totalPeriods}期`: `${this.state.currentPeriods}天`}
+                            </Text>
                         </View>
                         <View>
-                            <Text style={styles.loan_time}>{this.state.peroid}</Text>
+                            <Text style={styles.loan_time}>
+                                {this.state.totalPeriods > 1 ? `第${this.state.currentPeriods}期`: `${this.state.currentPeriods}天`}
+                            </Text>
                         </View>
                     </View>
 
@@ -78,24 +159,29 @@ class RepayDetail extends Component {
                     <View>
                         <View style={styles.rate}>
                             <Text style={styles.r1}>本金</Text>
-                            <Text style={styles.r2}>{this.state.baseAmount}元</Text>
+                            <Text style={styles.r2}>{this.state.currentCapital}元</Text>
                         </View>
                         <View style={styles.rate}>
                             <Text  style={styles.r1}>利息</Text>
-                            <Text  style={styles.r2}>{this.state.rate}元</Text>
+                            <Text  style={styles.r2}>{this.state.currentInterest}元</Text>
                         </View>
                         <View style={styles.rate}>
                             <Text  style={styles.r1}>逾期费</Text>
-                            <Text  style={styles.r2}>{this.state.beOverdue}元</Text>
+                            <Text  style={styles.r2}>{this.state.overdueAmt}元</Text>
                         </View>
                         <View style={styles.rate}>
-                            <Text  style={styles.r1}>还款方式</Text>
-                            <Text  style={styles.r2}>{this.state.payment}</Text>
+                            <Text  style={styles.r1}>减免金额</Text>
+                            <Text  style={styles.r2}>{this.state.periodsSubstractAmt}元</Text>
+                        </View>
+                        <View style={styles.rate}>
+                            <Text  style={styles.r1}>已还金额</Text>
+                            <Text  style={styles.r2}>{this.state.actualRepayAmt}元</Text>
                         </View>
                     </View>
 
 
                 </View>
+                <Toast  position="center" ref="toast"/>
             </View>
         )
     }

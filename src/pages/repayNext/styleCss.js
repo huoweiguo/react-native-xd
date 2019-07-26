@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
     container: {
@@ -85,6 +86,14 @@ export const styles = StyleSheet.create({
         left: 0,
         top: 0,
         width: '100%',
+        height: 60,
+        zIndex: 10
+    },
+    clickView: {
+        position:  'absolute',
+        left: 0,
+        top: 0,
+        width: width,
         height: 60,
         zIndex: 10
     }

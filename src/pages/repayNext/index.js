@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { styles } from './styleCss';
-import { linkAddress } from '../../../api';
+import { postAddress, token, userId, merchantId } from '../../../api';
 import Toast, {DURATION} from 'react-native-easy-toast';
 
 class RepayNext extends Component {
@@ -17,17 +17,25 @@ class RepayNext extends Component {
 
     componentDidMount() {
         const _this = this;
-        fetch(`${linkAddress}/src/mock/cost_list.json`)
-            .then( res => {
-                return res.json();
+        let t = new Date().getTime();
+        let url = `${postAddress}/loan/queryBillRepayPlanList?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`
+        fetch(url,{
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                billOrderId: _this.props.navigation.state.params.sysSeqId
             })
+        }).then( res => res.json())
             .then ( res => {
+                console.log(res);
                 if (res.respCode === '000000') {
-                    this.setState( _ => ({
-                        once: res.once,
-                        amount: res.amount,
-                        extends_list: res.data
-                    }));
+                    this.setState({
+                        once: res.data.unclearCount,
+                        extends_list: res.data.repayPlanRoughList
+                    });
                 } else {
                     _this.refs.toast.show(res.respMsg);
                 }
@@ -38,10 +46,26 @@ class RepayNext extends Component {
     }
 
 
-    goToRepayDetail (id) {
-        this.props.navigation.navigate('RepayDetail2', {
-            id: id
-        });
+    goToRepayDetail (sysSeqId, status) {
+        let { navigate } = this.props.navigation; 
+        if (status === 'P') {
+            this.refs.toast.show('订单处理中...');
+            return false;
+        }
+
+        if (status === 'S') {
+            navigate('RepayDetail2', {
+                singleRepayPlanId: sysSeqId
+            });
+            return false;
+        }
+
+        if (status === 'W') {
+            navigate('RepayDetail', {
+                sysSeqId: sysSeqId,
+                billOrderId: this.props.navigation.state.params.sysSeqId
+            });
+        }
     }
     
 
@@ -52,7 +76,7 @@ class RepayNext extends Component {
                 {/**repay header */}
                 <View style={styles.repay_outer}>
                     <Text style={styles.txt1}>未还总额(元)</Text>
-                    <Text style={styles.txt2}>{this.state.amount}</Text>
+                    <Text style={styles.txt2}>{this.props.navigation.state.params.repayAmt}</Text>
                     <Text style={styles.txt3}>共计<Text style={styles.cred}>{this.state.once}笔</Text>未结清</Text>
                 </View>
 
@@ -68,10 +92,10 @@ class RepayNext extends Component {
                         this.state.extends_list.map( (item, index) => {
                             return (
                                 <View style={styles.list_s} key={item.id}>
-                                    <Text style={styles.textMask} onPress={this.goToRepayDetail.bind(this, item.id)}></Text>
-                                    <Text style={[styles.list_date, item.isOverdue === 'O' ? styles.cred : item.isOverdue === 'S' ? styles.repay_s: '']}>{item.datatime}</Text>
+                                    <Text style={styles.clickView} onPress={this.goToRepayDetail.bind(this, item.sysSeqId, item.status)}></Text>
+                                    <Text style={[styles.list_date, item.overdueDay === 'O' ? styles.cred : item.isOverdue === 'S' ? styles.repay_s: '']}>{item.repayDate}</Text>
                                     <View style={{flexDirection: 'row'}}>
-                                        <Text style={[styles.list_amount, item.isOverdue === 'O' ? styles.cred : item.isOverdue === 'S' ? styles.repay_s: '']}>{item.amount}元</Text>
+                                        <Text style={[styles.list_amount, item.overdueDay === 'O' ? styles.cred : item.isOverdue === 'S' ? styles.repay_s: '']}>{item.shouldRepayAmt}元</Text>
                                         <Image style={styles.r_arrow} source={require('../../assets/right-arrow.png')}/>
                                     </View>
                                 </View>
