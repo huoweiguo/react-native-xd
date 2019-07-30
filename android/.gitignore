@@ -1,0 +1,35 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+Product/bin/
+Product/gen/
+Product/build/
+FacebookSDK/
+PhotoView/build/
+UIL/build/
+google-play-services_lib/
+build/
+local.properties
+nohup.out
+gradle.properties
+
+# Android Studio
+*.iml
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+.project
+captures/
+
+*.log
+captures/

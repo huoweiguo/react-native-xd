@@ -1,6 +1,7 @@
 package com.rntest;
 
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -23,9 +24,9 @@ public class CaptchaModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showCaptcha() {
+    public void showCaptcha(Callback success, Callback failure) {
         //Toast.makeText(getReactApplicationContext(), "来自java层的msg", Toast.LENGTH_SHORT).show();
         captchaHelper.init(getCurrentActivity());
-        captchaHelper.show();
+        captchaHelper.show(success, failure);
     }
 }

@@ -3,6 +3,7 @@ package com.rntest;
 import android.app.Activity;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.Callback;
 import com.netease.nis.captcha.Captcha;
 import com.netease.nis.captcha.CaptchaConfiguration;
 import com.netease.nis.captcha.CaptchaListener;
@@ -13,8 +14,10 @@ import com.netease.nis.captcha.CaptchaListener;
 public class CaptchaHelper {
     private Captcha mCaptcha = null;
     private Activity mContext = null;
-//    private UserLoginTask mLoginTask = null;
+    //    private UserLoginTask mLoginTask = null;
     String testCaptchaId = "d4f32e92c74e4363928fb791ecaa3a44";
+    private Callback mSuccessCallback;
+    private Callback mFailureCallback;
 
     public void init(Activity context) {
         mContext = context;
@@ -47,12 +50,14 @@ public class CaptchaHelper {
 //        mCaptcha.validate();
     }
 
-    public void show() {
+    public void show(Callback success, Callback failure) {
         //必填：初始化 captcha框架
 //        mCaptcha.start();
 //        mLoginTask = new UserLoginTask();
         //关闭mLoginTask任务可以放在myCaptchaListener的onCancel接口中处理
 //        mLoginTask.execute();
+        mSuccessCallback = success;
+        mFailureCallback = failure;
         mCaptcha.validate();
     }
 
@@ -69,9 +74,14 @@ public class CaptchaHelper {
             //验证结果，valiadte，可以根据返回的三个值进行用户自定义二次验证
             if (validate.length() > 0) {
                 toastMsg("验证成功，validate = " + validate);
+                if (mSuccessCallback != null) {
+                    mSuccessCallback.invoke(validate);
+                }
             } else {
                 toastMsg("验证失败：result = " + result + ", validate = " + validate + ", message = " + message);
-
+                if (mFailureCallback != null) {
+                    mFailureCallback.invoke("验证失败");
+                }
             }
         }
 
