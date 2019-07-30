@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>F14D074B-8259-4171-8790-3D6D98F4CF0B</key>
+		<key>B4304E3A-DF7F-4DF2-907F-F6B6539E2AD4</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,11 +15,11 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>F14D074B-8259-4171-8790-3D6D98F4CF0B.xcactivitylog</string>
+			<string>B4304E3A-DF7F-4DF2-907F-F6B6539E2AD4.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
-				<string>W</string>
+				<string>E</string>
 			</dict>
 			<key>schemeIdentifier-containerName</key>
 			<string>rntest project</string>
@@ -30,13 +30,45 @@
 			<key>signature</key>
 			<string>Building project rntest with scheme rntest and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>584249159.993186</real>
+			<real>586083570.17347205</real>
 			<key>timeStoppedRecording</key>
-			<real>584249487.83065999</real>
+			<real>586083626.49346304</real>
 			<key>title</key>
 			<string>Building project rntest with scheme rntest and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>F14D074B-8259-4171-8790-3D6D98F4CF0B</string>
+			<string>B4304E3A-DF7F-4DF2-907F-F6B6539E2AD4</string>
+		</dict>
+		<key>F96351A1-0F10-4A59-840F-AC5BBD98BD95</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>F96351A1-0F10-4A59-840F-AC5BBD98BD95.xcactivitylog</string>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>rntest project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>rntest</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building project rntest with scheme rntest and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>586059248.60874498</real>
+			<key>timeStoppedRecording</key>
+			<real>586059250.86314905</real>
+			<key>title</key>
+			<string>Building project rntest with scheme rntest and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>F96351A1-0F10-4A59-840F-AC5BBD98BD95</string>
 		</dict>
 	</dict>
 </dict>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView} from 'react-native';
 import { styles } from './stylsCss';
-import { postAddress, token, userId, merchantId }  from '../../../api';
+import { postAddress }  from '../../../api';
 import Toast from 'react-native-easy-toast';
+import commons from '../../../getItems';
 
 class RepayDetail2 extends Component {
     constructor (props) {
@@ -23,7 +24,11 @@ class RepayDetail2 extends Component {
             periodsPenalSumAmt: 0,
             periodsPortAmt: 0,
             periodsInterestRateAmt: 0,
-            loanProtocolPicUrl: ''
+            loanProtocolPicUrl: '',
+            token: '',
+            merchantId: '',
+            userId: '',
+            userName: ''
         }
     }
 
@@ -31,7 +36,7 @@ class RepayDetail2 extends Component {
         const _this = this;
         let t = new Date().getTime(),
         singleRepayPlanId = this.props.navigation.state.params.singleRepayPlanId;
-        let url = `${postAddress}/plan/${singleRepayPlanId}?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+        let url = `${postAddress}/plan/${singleRepayPlanId}?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url).then( res => res.json())
             .then( res => {
                 if (res.respCode === '000000') {
@@ -76,7 +81,10 @@ class RepayDetail2 extends Component {
     }
 
     componentDidMount() {
-        this.renderSingle();
+        let _this = this;
+        commons.getItemParams(this, function(){
+            _this.renderSingle();
+        });
     }
     
 

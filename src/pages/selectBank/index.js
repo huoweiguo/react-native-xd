@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { styles } from './styleCss';
+import { postAddress, preAddress } from '../../../api';
 
 class SelectBank extends Component {
     constructor (props) {
@@ -12,7 +13,7 @@ class SelectBank extends Component {
 
     renderBank () {
         const _this = this;
-        fetch(`http://huopan-test.baijiajiekuan.com/api/preloan/limitAmt/list?t=new Date().getTime()`)
+        fetch(`${preAddress}/limitAmt/list?t=new Date().getTime()`)
             .then( res => { return res.json() })
             .then( res => {
                 if (res.respCode === '000000') {

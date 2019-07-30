@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, ScrollView } from 'react-native';
 import { styles } from './styleCss';
-import { preAddress, token, userId, merchantId } from '../../../api';
+import { preAddress } from '../../../api';
 import queryString from 'querystring';
 import Toast from 'react-native-easy-toast';
+import commons from '../../../getItems';
 
 class BindCard extends Component {
     constructor (props) {
@@ -11,6 +12,9 @@ class BindCard extends Component {
         this.state = {
             idCard: "",
             userName: '',
+            token: '',
+            merchantId:  '',
+            userId: '',
             userPhone: "",
             smsCode: '',
             cardNumber: '',
@@ -70,7 +74,7 @@ class BindCard extends Component {
     initInfo () {
         const _this = this;
         let t = new Date().getTime(),
-            url = `${preAddress}/bankCard/bindCardLog/initBandCardInfo?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+            url = `${preAddress}/bankCard/bindCardLog/initBandCardInfo?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url,{
             method: 'POST',
             headers: {
@@ -101,7 +105,7 @@ class BindCard extends Component {
     cardBlur () {
         const _this = this;
         let t = new Date().getTime(),
-            url = `${preAddress}/cabin/bank?token=${token}&userId=${userId}&merchantId=${merchantId}&cardNo=${this.state.cardNumber}&t=${t}`;
+            url = `${preAddress}/cabin/bank?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&cardNo=${this.state.cardNumber}&t=${t}`;
         fetch (url, {
             method: 'GET',
             headers: {
@@ -145,7 +149,7 @@ class BindCard extends Component {
 
         let _this = this,
             t = new Date().getTime(),
-            url = `${preAddress}/bankCard/verifyCode?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+            url = `${preAddress}/bankCard/verifyCode?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -209,7 +213,7 @@ class BindCard extends Component {
     sureBindCard () {
         let _this = this,
             t = new Date().getTime(),
-            url = `${preAddress}/bankCard/bindConfirm?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+            url = `${preAddress}/bankCard/bindConfirm?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -235,7 +239,10 @@ class BindCard extends Component {
     }
 
     componentDidMount() {
-      this.initInfo();
+        var _this = this;
+        commons.getItemParams(this, function(){
+            _this.initInfo();
+        });
     }
     
     render () {

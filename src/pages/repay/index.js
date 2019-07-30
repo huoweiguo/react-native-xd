@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableHighlight, Modal, ScrollView, DeviceEventEmitter} from 'react-native';
-import { postAddress, token, userId, merchantId }  from '../../../api';
+import { postAddress }  from '../../../api';
 import Toast from 'react-native-easy-toast';
 import { styles } from './styleCss';
+import commons from '../../../getItems';
+
 
 class Repay extends Component {
     
@@ -15,7 +17,11 @@ class Repay extends Component {
             pages: 100,
             count: 0,
             isBottom: false,
-            visible: false
+            visible: false,
+            token: '',
+            userId: '',
+            merchantId: '',
+            userName: ''
         }
     }
     
@@ -33,16 +39,17 @@ class Repay extends Component {
 
     //渲染还款数据
     getRepayList (current) {
-        const _this = this;
-        fetch(`${postAddress}/loan/queryBillOrderList`, {
+        let _this = this,
+            t = new Date().getTime();
+        fetch(`${postAddress}/loan/queryBillOrderList?t=${t}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json",
-                token: token
+                token: _this.state.token
             },
             body: JSON.stringify({
-                userId: userId,
-                merchantId: merchantId,
+                userId: _this.state.userId,
+                merchantId: _this.state.merchantId,
                 size: 10,
                 current: current
             })
@@ -83,9 +90,11 @@ class Repay extends Component {
 
     componentDidMount() {
         const _this = this;
-        this.subscription = DeviceEventEmitter.addListener('renderRepayList', () => {
-            _this.getRepayList(1);
-        })
+        commons.getItemParams(this, function(){
+            this.subscription = DeviceEventEmitter.addListener('renderRepayList', () => {
+                _this.getRepayList(1);
+            })
+        });
     }
 
     componentWillUnmount() {

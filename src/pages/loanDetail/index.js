@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { View, Text, Image, TouchableHighlight, SafeAreaView } from 'react-native';
 import { linkAddress }  from '../../../api';
 import { styles } from './styleCss';
+import commons from '../../../getItems';
 
 class LoanDetail extends Component {
     constructor (props) {

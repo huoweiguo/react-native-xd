@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, SafeAreaView } from 'react-native';
 import { styles } from './styleCss';
 import ImageSilder from '../../components/imageSilder';
-import { preAddress, token, merchantId, userId, userName } from '../../../api';
+import { preAddress } from '../../../api';
 import queryString from 'querystring';
 import Toast from 'react-native-easy-toast';
+import commons from '../../../getItems';
 
 class Loan extends Component {
     
@@ -16,7 +17,9 @@ class Loan extends Component {
                 'http://pic37.nipic.com/20140115/7430301_100825571157_2.jpg',
                 'http://pic25.nipic.com/20121112/9252150_150552938000_2.jpg'
             ],
-
+            token: '',
+            merchantId:  '',
+            userId: '',
             productId: '',
             userName: '',
             productName: '',
@@ -31,15 +34,14 @@ class Loan extends Component {
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                token: token
+                token: _this.state.token
             },
             body: queryString.stringify({
-                merchantId: merchantId,
-                userId: userId
+                merchantId: _this.state.merchantId,
+                userId: _this.state.userId
             })
         }).then( res => res.json())
             .then( res => {
-                console.log(res);
                 if (res.respCode == '000000') {
                     _this.setState({
                         productList: res.data
@@ -53,17 +55,15 @@ class Loan extends Component {
             });
     }
     
-
     _goInitLink (obj) {
         /**
          * REFUSE: 审核拒绝
          * SUCCESS: 通过
          *  */
-
         this.setState({
             productId: obj.productId,
             productName: obj.productName,
-            userName: userName
+            userName: this.state.userName
         })
 
          if (!obj.hasPassAndNotAcceptFlag) {
@@ -79,15 +79,15 @@ class Loan extends Component {
         let _this = this,
             {navigate} = this.props.navigation,
             t = new Date().getTime(),
-            url = `${preAddress}/bankCard/query?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`
+            url = `${preAddress}/bankCard/query?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`
         fetch(url,{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                userId: userId,
-                merchantId: merchantId
+                userId: _this.state.userId,
+                merchantId: _this.state.merchantId
             })
         })
         .then( res => res.json() )
@@ -113,7 +113,10 @@ class Loan extends Component {
     }
 
     componentDidMount() {
-      this.getProduct();
+        let _this = this;
+        commons.getItemParams(this, function(){
+            _this.getProduct();
+        });
     }
     
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Modal, ScrollView} from 'react-native';
 import { styles } from './styleCss';
-import { postAddress, preAddress, token, userId, merchantId } from '../../../api';
+import { postAddress, preAddress } from '../../../api';
 import Toast from 'react-native-easy-toast';
 import queryString from 'querystring';
+import commons from '../../../getItems';
 
 class Repayment extends Component {
     constructor (props) {
@@ -20,7 +21,11 @@ class Repayment extends Component {
                 payChannelCode: '',
                 bankLogo: '',
                 bankCardId: '',
-                cardId: ''
+                cardId: '',
+                token: '',
+                merchantId:  '',
+                userId: '',
+                userName: ''
             }
         }
     }
@@ -62,7 +67,7 @@ class Repayment extends Component {
     baseInfo () {
         const _this = this;
         let t = new Date().getTime();
-        let url = `${postAddress}/repayment/confirm?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+        let url = `${postAddress}/repayment/confirm?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -104,15 +109,15 @@ class Repayment extends Component {
     renderOwnCard () {
         const _this = this;
         let t = new Date().getTime();
-        let url = `${preAddress}/bankCard/query?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`
+        let url = `${preAddress}/bankCard/query?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`
         fetch(url,{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                userId: userId,
-                merchantId: merchantId,
+                userId: _this.state.userId,
+                merchantId: _this.state.merchantId,
                 payChannelCode: _this.state.payChannelCode
             })
         })
@@ -172,7 +177,7 @@ class Repayment extends Component {
         let { navigate } = this.props.navigation;
         let { amt, periods, billOrderId, tradeType } = this.props.navigation.state.params;
         let t = new Date().getTime();
-        let url = `${postAddress}/repayment/pay?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+        let url = `${postAddress}/repayment/pay?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -205,7 +210,10 @@ class Repayment extends Component {
     
 
     componentDidMount() {
-        this.baseInfo();
+        let _this = this;
+        commons.getItemParams(this, function(){
+            _this.baseInfo();
+        });
     }
     
 

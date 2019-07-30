@@ -1,0 +1,24 @@
+dependencies: \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/Demangle.cpp \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/Demangle.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/FBString.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/CppAttributes.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/Portability.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/portability/Config.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/CPortability.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/Traits.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/hash/Hash.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/Utility.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/functional/ApplyTuple.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/functional/Invoke.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/Preprocessor.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/hash/SpookyHashV1.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/hash/SpookyHashV2.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/lang/Bits.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/ConstexprMath.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/lang/Assume.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/portability/Builtins.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/lang/Exception.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/memory/Malloc.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/memory/detail/MallocImpl.h \
+  /Users/zengjuexin/Desktop/霍维国项目/rntest/node_modules/react-native/third-party/folly-2018.10.22.00/folly/detail/Demangle.h

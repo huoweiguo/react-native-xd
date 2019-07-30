@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, Image, BVLinearGradient, ScrollView, Modal} from 'react-native';
 import { styles } from './styleCss.js';
 import LinearGradient from 'react-native-linear-gradient';
-import { preAddress, token, userId, merchantId } from '../../../api';
+import { preAddress } from '../../../api';
 import Toast from 'react-native-easy-toast';
 import queryString from 'querystring';
+import commons from '../../../getItems';
 class BankList extends Component {
     constructor (props) {
         super(props);
@@ -13,12 +14,19 @@ class BankList extends Component {
             isSetCard: false,
             cardList:  [],
             cardId: '',
-            userBankId: ''
+            userBankId: '',
+            userId: '',
+            userName: '',
+            token: '',
+            merchantId: ''
         }
     }
 
     componentDidMount() {
-        this.renderOwnCard();
+        let _this = this;
+        commons.getItemParams(this, function () {
+            _this.renderOwnCard();
+        });
     }
     
     //设置默认卡
@@ -40,7 +48,7 @@ class BankList extends Component {
     setCard () {
         const _this = this;
         let t = new Date().getTime();
-        let url = `${preAddress}/bankCard/default/change?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+        let url = `${preAddress}/bankCard/default/change?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -85,15 +93,15 @@ class BankList extends Component {
     renderOwnCard () {
         const _this = this;
         let t = new Date().getTime();
-        let url = `${preAddress}/bankCard/query?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`
+        let url = `${preAddress}/bankCard/query?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`
         fetch(url,{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                userId: userId,
-                merchantId: merchantId
+                userId: _this.state.userId,
+                merchantId: _this.state.merchantId
             })
         })
             .then( res => res.json() )

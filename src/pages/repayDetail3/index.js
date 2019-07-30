@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView} from 'react-native';
 import { styles } from './stylsCss';
-import { postAddress, token, userId, merchantId } from '../../../api';
+import { postAddress } from '../../../api';
 import Toast from 'react-native-easy-toast';
 import queryString from 'querystring';
+import commons from '../../../getItems';
+
 
 class RepayDetail3 extends Component {
     constructor (props) {
@@ -11,7 +13,11 @@ class RepayDetail3 extends Component {
         this.state = {
             amount: '',
             once: '',
-            list: []
+            list: [],
+            token: '',
+            merchantId: '',
+            userId: '',
+            userName: ''
         }
     }
 
@@ -19,7 +25,7 @@ class RepayDetail3 extends Component {
         const _this = this;
         let t = new Date().getTime();
         let sysSeqId = this.props.navigation.state.params.sysSeqId;
-        let url = `${postAddress}/plan/detail?token=${token}&userId=${userId}&merchantId=${merchantId}&billOrderId=${sysSeqId}&t=${t}`;
+        let url = `${postAddress}/plan/detail?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&billOrderId=${sysSeqId}&t=${t}`;
         fetch(url).then( res => { return res.json() })
             .then( res => {
                 console.log(res);
@@ -46,7 +52,9 @@ class RepayDetail3 extends Component {
     }
 
     componentDidMount () {
-        this.renderList();
+        commons.getItemParams(this, function(){
+            _this.renderList();
+        });
     }
 
     render () {

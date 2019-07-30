@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, Image} from 'react-native';
 import { styles } from './initStyle';
 import RotateInit from '../../components/rotateInit';
-import { preAddress, token, merchantId, userId } from '../../../api';
+import { preAddress} from '../../../api';
 import queryString from 'querystring';
+import commons from '../../../getItems';
 import axios from 'axios';
 
 class Init extends Component {
@@ -15,7 +16,11 @@ class Init extends Component {
             isShow: false,
             cancel: null,
             productLoanAmt: 0,
-            isPass: false
+            isPass: false,
+            token: '',
+            userId: '',
+            merchantId: '',
+            userName: ''
         }
     }
 
@@ -23,9 +28,9 @@ class Init extends Component {
     initInterface () {
         const CancelToken = axios.CancelToken;
         const _this = this;
-        let { productId, userName, productName } = this.props.navigation.state.params;
+        let { productId, productName } = this.props.navigation.state.params;
         let t = new Date().getTime(),
-            url = `${preAddress}/risk/getRiskResult?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+            url = `${preAddress}/risk/getRiskResult?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         
         axios({
             method: 'POST',
@@ -35,7 +40,7 @@ class Init extends Component {
             },
             data: queryString.stringify({
                 productId,
-                userName,
+                userName: _this.state.userName,
                 productName,
                 channelId: '01'
             })
@@ -48,7 +53,7 @@ class Init extends Component {
         })
         .then ( res => {
             console.log(res.data);
-            let { productId, productName, userName } = _this.props.navigation.state.params;
+            let { productId, productName } = _this.props.navigation.state.params;
             if (res.data.respCode === '6666666') {
                 _this.setState( _ => ({
                     productLoanAmt: res.data.productLoanAmt
@@ -63,7 +68,7 @@ class Init extends Component {
                             sysSeqId: res.data.sysSeqId,
                             productId,
                             productName,
-                            userName
+                            userName:  _this.state.userName
                         });
                     },1500)
                 }
@@ -80,9 +85,13 @@ class Init extends Component {
         });
     }
 
+
     componentDidMount() {
-        this.initInterface();
-        this.countDown();
+        var _this = this;
+        commons.getItemParams(this, function(){
+            _this.initInterface();
+            _this.countDown();
+        });
     }
     
     //倒计时

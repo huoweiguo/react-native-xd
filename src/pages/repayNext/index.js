@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { styles } from './styleCss';
-import { postAddress, token, userId, merchantId } from '../../../api';
+import { postAddress } from '../../../api';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import commons from '../../../getItems';
 
 class RepayNext extends Component {
 
@@ -11,14 +12,18 @@ class RepayNext extends Component {
         this.state = {
             amount: '',
             once: '',
-            extends_list: []
+            extends_list: [],
+            token: '',
+            merchantId:  '',
+            userId: '',
+            userName: ''
         }
     }
 
-    componentDidMount() {
-        const _this = this;
+    renderData () {
+        let _this = this;
         let t = new Date().getTime();
-        let url = `${postAddress}/loan/queryBillRepayPlanList?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`
+        let url = `${postAddress}/loan/queryBillRepayPlanList?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`
         fetch(url,{
             method: 'POST',
             headers: {
@@ -28,21 +33,30 @@ class RepayNext extends Component {
             body: JSON.stringify({
                 billOrderId: _this.props.navigation.state.params.sysSeqId
             })
-        }).then( res => res.json())
-            .then ( res => {
-                console.log(res);
-                if (res.respCode === '000000') {
-                    this.setState({
-                        once: res.data.unclearCount,
-                        extends_list: res.data.repayPlanRoughList
-                    });
-                } else {
-                    _this.refs.toast.show(res.respMsg);
-                }
-            })
-            .catch ( err => {
-                console.error(err);
-            })
+        })
+        .then( res => res.json())
+        .then ( res => {
+            console.log(res);
+            if (res.respCode === '000000') {
+                this.setState({
+                    once: res.data.unclearCount,
+                    extends_list: res.data.repayPlanRoughList
+                });
+            } else {
+                _this.refs.toast.show(res.respMsg);
+            }
+        })
+        .catch ( err => {
+            console.error(err);
+        });
+    }
+
+    componentDidMount() {
+        let _this = this;
+
+        commons.getItemParams(this, function(){
+            _this.renderData();
+        });
     }
 
 

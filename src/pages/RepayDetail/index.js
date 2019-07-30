@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
-import { postAddress, token, userId, merchantId } from '../../../api';
+import { postAddress } from '../../../api';
 import { styles } from './styleCss';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import commons from '../../../getItems';
 
 class RepayDetail extends Component {
     constructor (props) {
@@ -22,6 +23,10 @@ class RepayDetail extends Component {
             overdueStatus: '',
             overdueDay: 0,
             isExtends: false,  //是否展期
+            token: '',
+            merchantId: '',
+            userId: '',
+            userName: ''
         }
     }
 
@@ -38,7 +43,7 @@ class RepayDetail extends Component {
     renderDetail () {   
         const _this = this;
         let t = new Date().getTime();
-        let url = `${postAddress}/loan/queryBillRepayPlanDetail?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`;
+        let url = `${postAddress}/loan/queryBillRepayPlanDetail?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -90,7 +95,10 @@ class RepayDetail extends Component {
     }
 
     componentDidMount() {
-        this.renderDetail();
+        let _this = this;
+        commons.getItemParams(this, function(){
+            _this.renderDetail();
+        });
     }
     
 

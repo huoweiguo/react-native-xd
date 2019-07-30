@@ -6,8 +6,11 @@ import {
     TouchableHighlight, 
     TouchableOpacity, 
     TextInput,
-    SafeAreaView
+    SafeAreaView,
+    NativeModules,
+    Platform
 } from 'react-native';
+import StorageUtil from '../../../storageUtil';
 
 class Login extends Component {
     constructor (props) {
@@ -26,6 +29,14 @@ class Login extends Component {
     _getSmsCode () {
         const mobileExp = /^1[3|4|5|7|8][0-9]{9}/;
         const { navigate } = this.props.navigation;
+        if (Platform.OS == 'ios') {
+            NativeModules.NTESRNRouter.showVerifyCode();
+        } else {
+            NativeModules.CaptchaHelper.showCaptcha();
+        }
+
+        
+        return false;
 
         if (mobileExp.test(this.state.inputValue)) {
             navigate('SetCode',{
@@ -50,6 +61,14 @@ class Login extends Component {
     }
 
     componentDidMount() {
+        // StorageUtil.save('token','eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJNMDAwMDAwMiIsIm1lcmNoYW50SWQiOiJNMDAwMDAwMiIsInVzZXJJZCI6IkMwMDE3MzA2OTUzOTEwOTgwNjA4IiwiZXhwIjoxNjQzNDI3NTM2fQ.ltFHtbBcDyVZrZ9Eh9obxdLNBlKeY--EI_fDd0Ide2X8rOiLlXUU7NoIKlemh9C7iNW30pUVy-YHz3cVAEa3G-7VDsidp0k2bU6wQ2GyJQ_eZ8mOKNPUY2NRuQSNL9BClXUegxdhiWR_1WzhfHJPknGSDe7rjWmML_sSgN9Z8I0');
+        // StorageUtil.save('userId', 'C0017306953910980608');
+        // StorageUtil.save('merchantId', 'M0000002');
+        // StorageUtil.save('userName', '鲍杰');
+    }
+
+    componentWillMount () {
+        NativeModules.NTESRNRouter.configVerifyCode();
     }
     
 

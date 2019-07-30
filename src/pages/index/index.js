@@ -41,7 +41,7 @@ class Home extends Component {
                     title="还款"
                     renderIcon={() => <Image style={styles.barImg} source={require('../../assets/icon2_hk.png')} />}
                     renderSelectedIcon={() => <Image style={styles.barImg} source={require('../../assets/icon2_hk_pre.png')} />}
-                    badgeText="2"
+                    //badgeText="2"
                     onPress={() => this.setState({ selectedTab: 'Repay' })}>
                     {repayView}
                 </TabNavigator.Item>

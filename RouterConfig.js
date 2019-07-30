@@ -135,7 +135,7 @@ const AppNavigator = createStackNavigator({
         })
     }
 }, {
-    initialRouteName: 'LoanDetail' //login
+    initialRouteName: 'Login' //login
 });
 
 export default createAppContainer(AppNavigator);

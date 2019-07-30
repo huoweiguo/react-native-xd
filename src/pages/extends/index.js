@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Modal } from 'react-native';
-import { postAddress, token, userId, merchantId } from '../../../api';
+import { postAddress } from '../../../api';
 import { styles } from './styleCss';
 import queryString from 'querystring';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import commons from '../../../getItems';
 
 class extendDate extends Component {
     constructor (props) {
@@ -48,7 +49,7 @@ class extendDate extends Component {
     renderExtends () {
         const _this = this;
         let t = new Date().getTime();
-        let url = `${postAddress}/loanEx/caculate?token=${token}&userId=${userId}&merchantId=${merchantId}&t=${t}`
+        let url = `${postAddress}/loanEx/caculate?token=${this.state.token}&userId=${this.state.userId}&merchantId=${this.state.merchantId}&t=${t}`
         fetch(url, {
             method: 'POST',
             headers: {
@@ -95,7 +96,10 @@ class extendDate extends Component {
     }
 
     componentDidMount() {
-        this.renderExtends();
+        let _this = this;
+        commons.getItemParams(this, function(){
+            _this.renderExtends()
+        });
     }
     
 
