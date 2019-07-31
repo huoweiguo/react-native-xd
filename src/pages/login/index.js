@@ -32,12 +32,13 @@ class Login extends Component {
         if (Platform.OS == 'ios') {
             NativeModules.NTESRNRouter.showVerifyCode();
         } else {
-            NativeModules.CaptchaHelper.showCaptcha();
+            NativeModules.CaptchaHelper.showCaptcha((code)=>{
+                //成功的验证码回调
+            },(error)=>{
+                // 验证失败逻辑
+            });
         }
-
-        
         return false;
-
         if (mobileExp.test(this.state.inputValue)) {
             navigate('SetCode',{
                 mobile: this.state.inputValue
