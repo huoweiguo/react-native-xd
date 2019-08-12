@@ -18,3 +18,5 @@
 
 -keep class android.text {* ;}
 -dontwarn android.text.*
+-keep class com.rt2zz.reactnativecontacts.** {*;}
+-keepclassmembers class com.rt2zz.reactnativecontacts.** {*;}
